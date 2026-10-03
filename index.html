@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#17345e">
+  <title>FLAG QUEST — World Flag Challenge</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <button class="brand-button" data-screen="home" type="button" aria-label="Go to home">
+        <span class="brand-globe">🌎</span>
+        <span>
+          <strong>FLAG QUEST</strong>
+          <small>World Flag Challenge</small>
+        </span>
+      </button>
+
+      <div class="topbar-actions">
+        <div class="points-pill" aria-label="Points">
+          ⭐ <span id="header-points">0</span>
+        </div>
+        <button class="icon-button" data-screen="settings" type="button" aria-label="Settings">
+          ⚙️
+        </button>
+      </div>
+    </header>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <button class="nav-button active" data-screen="home" type="button">🏠 Home</button>
+      <button class="nav-button" data-screen="map" type="button">🗺️ World map</button>
+      <button class="nav-button" data-screen="achievements" type="button">🏆 Awards</button>
+      <button class="nav-button" data-screen="settings" type="button">⚙️ Settings</button>
+    </nav>
+
+    <!-- HOME -->
+    <section id="home-screen" class="screen active">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow light">YOUR WORLD ADVENTURE STARTS HERE</p>
+          <h1>Explore the world,<br>one flag at a time!</h1>
+          <p>Recognize flags, collect points, and discover fun facts about countries.</p>
+
+          <button id="open-play-button" class="button button-light" type="button">
+            ▶ Play
+          </button>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <span class="hero-cloud cloud-one">☁️</span>
+          <span class="hero-plane">✈️</span>
+          <span class="hero-globe">🌎</span>
+          <span class="hero-star">⭐</span>
+        </div>
+      </section>
+
+      <section class="home-stats">
+        <article class="stat-card">
+          <span class="stat-icon">🌍</span>
+          <div>
+            <strong id="home-discovered">Loading countries…</strong>
+            <small>Countries discovered</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-icon">🔥</span>
+          <div>
+            <strong id="home-best-streak">0</strong>
+            <small>Best answer streak</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-icon">🏅</span>
+          <div>
+            <strong id="home-awards">0 / 4</strong>
+            <small>Awards earned</small>
+          </div>
+        </article>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">CHOOSE YOUR ADVENTURE</p>
+            <h2>Ready to explore?</h2>
+          </div>
+        </div>
+
+        <div class="mode-grid">
+          <button class="mode-card world-mode" data-mode="world" type="button">
+            <span class="mode-icon">🌎</span>
+            <strong>World Tour</strong>
+            <small>Travel region by region</small>
+          </button>
+
+          <button class="mode-card quick-mode" data-mode="quick" type="button">
+            <span class="mode-icon">⚡</span>
+            <strong>Quick Quiz</strong>
+            <small>Play a 10-question round</small>
+          </button>
+
+          <button class="mode-card region-mode" data-mode="region" type="button">
+            <span class="mode-icon">🗺️</span>
+            <strong>Region Challenge</strong>
+            <small>Practise one part of the world</small>
+          </button>
+
+          <button class="mode-card learn-mode" data-mode="learn" type="button">
+            <span class="mode-icon">🧠</span>
+            <strong>Learn Mode</strong>
+            <small>Explore flags at your own pace</small>
+          </button>
+        </div>
+      </section>
+
+      <p class="starter-note">
+        This starter game contains 24 countries. More countries can be added to its country list.
+      </p>
+    </section>
+
+    <!-- MODE SETUP -->
+    <section id="play-screen" class="screen">
+      <button class="back-link" data-screen="home" type="button">← Back home</button>
+
+      <div class="page-heading">
+        <p class="eyebrow">SET UP YOUR ROUND</p>
+        <h1>Choose your challenge</h1>
+        <p>Pick how you want to play. You can change these options any time.</p>
+      </div>
+
+      <div class="setup-grid">
+        <label class="field">
+          <span>Game mode</span>
+          <select id="mode-select">
+            <option value="world">🌎 World Tour</option>
+            <option value="quick">⚡ Quick Quiz — 10 questions</option>
+            <option value="region">🗺️ Region Challenge</option>
+          </select>
+        </label>
+
+        <label id="region-field" class="field hidden">
+          <span>Choose a region</span>
+          <select id="region-select"></select>
+        </label>
+
+        <label class="field">
+          <span>Difficulty</span>
+          <select id="difficulty-select">
+            <option value="auto">✨ Auto — adjusts as you improve</option>
+            <option value="easy">🟢 Easy</option>
+            <option value="medium">🟡 Medium</option>
+            <option value="hard">🔴 Hard</option>
+          </select>
+        </label>
+
+        <label class="toggle-card">
+          <span class="toggle-copy">
+            <strong>Challenge mode</strong>
+            <small>Hide answer choices. Type the country name instead.</small>
+          </span>
+          <input id="challenge-mode-toggle" type="checkbox">
+          <span class="toggle-visual" aria-hidden="true"></span>
+        </label>
+      </div>
+
+      <div id="locked-region-message" class="notice hidden">
+        Discover the countries in earlier regions to unlock this region.
+      </div>
+
+      <button id="start-game-button" class="button button-primary big-button" type="button">
+        Start adventure <span>→</span>
+      </button>
+    </section>
+
+    <!-- GAME -->
+    <section id="game-screen" class="screen">
+      <div class="game-topline">
+        <button id="exit-game-button" class="back-link" type="button">← Leave round</button>
+        <span id="round-label" class="round-label">Question 1 of 10</span>
+      </div>
+
+      <div class="game-progress-track">
+        <div id="round-progress" class="game-progress-fill"></div>
+      </div>
+
+      <div class="game-metrics">
+        <span>⭐ <strong id="round-points">0</strong> points</span>
+        <span>🔥 <strong id="round-streak">0</strong> streak</span>
+        <span id="difficulty-label">✨ Easy</span>
+      </div>
+
+      <article class="question-card">
+        <div id="region-chip" class="region-chip">🌏 Asia</div>
+        <p class="question-prompt">Which country is this?</p>
+        <div id="question-flag" class="question-flag" aria-label="Country flag">🇯🇵</div>
+        <p id="answer-feedback" class="answer-feedback" aria-live="polite">
+          Choose the country that matches the flag.
+        </p>
+
+        <div id="answer-options" class="answer-options"></div>
+
+        <form id="typed-answer-form" class="typed-answer-form hidden">
+          <label class="visually-hidden" for="typed-answer">Type the country name</label>
+          <input id="typed-answer" type="text" autocomplete="off"
+            placeholder="Type the country name" aria-label="Type the country name">
+          <button class="button button-primary" type="submit">Check answer</button>
+        </form>
+
+        <button
+  id="reveal-answer-button"
+  class="button button-secondary hidden reveal-answer-button"
+  type="button"
+>
+  I’m not sure — show me
+</button>
+
+        <article id="fact-card" class="fact-card hidden">
+          <strong id="fact-title">🌟 Country fact</strong>
+          <p id="fact-text"></p>
+        </article>
+
+        <button id="next-question-button" class="button button-primary next-button hidden" type="button">
+          Next question →
+        </button>
+      </article>
+    </section>
+
+    <!-- LEARN -->
+    <section id="learn-screen" class="screen">
+      <button class="back-link" data-screen="home" type="button">← Back home</button>
+
+      <div class="page-heading">
+        <p class="eyebrow">NO SCORE · NO RUSH</p>
+        <h1>Learn the flags</h1>
+        <p>Explore a country, listen to its name, and discover a quick fact.</p>
+      </div>
+
+      <div class="learn-controls">
+        <label class="field">
+          <span>Region</span>
+          <select id="learn-region-select"></select>
+        </label>
+      </div>
+
+      <article class="learn-card">
+        <div id="learn-region-chip" class="region-chip">🌏 Asia</div>
+        <div id="learn-flag" class="learn-flag">🇲🇾</div>
+        <h2 id="learn-country-name">Malaysia</h2>
+        <div class="learn-details">
+          <span>🏛️ Capital: <strong id="learn-capital">Kuala Lumpur</strong></span>
+          <span>🌍 Region: <strong id="learn-region-name">Asia</strong></span>
+        </div>
+        <p id="learn-fact" class="learn-fact"></p>
+
+        <div class="learn-actions">
+          <button id="learn-speak-button" class="button button-secondary" type="button">
+            🔊 Hear country name
+          </button>
+          <button id="next-country-button" class="button button-primary" type="button">
+            Next country →
+          </button>
+        </div>
+      </article>
+    </section>
+
+    <!-- WORLD MAP -->
+    <section id="map-screen" class="screen">
+      <button class="back-link" data-screen="home" type="button">← Back home</button>
+
+      <div class="page-heading">
+        <p class="eyebrow">YOUR DISCOVERY MAP</p>
+        <h1>World Tour</h1>
+        <p>Discover countries to open new regions on your journey.</p>
+      </div>
+
+      <article class="map-summary">
+        <span class="map-globe">🌎</span>
+        <div>
+          <strong id="map-discovered-count">Loading countries…</strong>
+          <div class="map-progress-track">
+            <div id="map-progress-fill" class="map-progress-fill"></div>
+          </div>
+        </div>
+      </article>
+
+      <div id="region-map-list" class="region-map-list"></div>
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section id="achievements-screen" class="screen">
+      <button class="back-link" data-screen="home" type="button">← Back home</button>
+
+      <div class="page-heading">
+        <p class="eyebrow">YOUR TROPHY SHELF</p>
+        <h1>Achievements</h1>
+        <p>Every new flag is a little win. Keep exploring!</p>
+      </div>
+
+      <div id="achievement-list" class="achievement-list"></div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="settings-screen" class="screen">
+      <button class="back-link" data-screen="home" type="button">← Back home</button>
+
+      <div class="page-heading">
+        <p class="eyebrow">MAKE IT YOURS</p>
+        <h1>Settings</h1>
+        <p>Choose the sound and learning options that work for you.</p>
+      </div>
+
+      <div class="settings-list">
+        <label class="setting-row">
+          <span>
+            <strong>Sound effects</strong>
+            <small>Play soft sounds for answers and rewards.</small>
+          </span>
+          <input id="sound-setting" type="checkbox">
+        </label>
+
+        <label class="setting-row">
+          <span>
+            <strong>Background music</strong>
+            <small>Play a gentle, synthesized musical loop.</small>
+          </span>
+          <input id="music-setting" type="checkbox">
+        </label>
+
+        <label class="setting-row">
+          <span>
+            <strong>Voice narration</strong>
+            <small>Read country names and encouraging messages aloud.</small>
+          </span>
+          <input id="voice-setting" type="checkbox">
+        </label>
+      </div>
+
+      <p class="privacy-note">
+        Your progress is saved in this browser on this device. The game does not ask for a name,
+        account, or personal details.
+      </p>
+
+      <button id="reset-progress-button" class="button button-danger" type="button">
+        Reset saved game progress
+      </button>
+    </section>
+
+    <!-- RESULTS -->
+    <section id="results-screen" class="screen">
+      <article class="results-card">
+        <div class="results-celebration">🎉</div>
+        <p class="eyebrow">ADVENTURE COMPLETE</p>
+        <h1>Great exploring!</h1>
+        <p id="result-message" class="result-message">You learned about the world!</p>
+
+        <div class="result-score">
+          <strong id="result-correct">0 / 10</strong>
+          <span>questions answered</span>
+        </div>
+
+        <div class="results-stats">
+          <div><strong id="result-points">0</strong><span>⭐ points earned</span></div>
+          <div><strong id="result-streak">0</strong><span>🔥 best streak</span></div>
+          <div><strong id="result-discovered">0</strong><span>🌍 countries discovered</span></div>
+        </div>
+
+        <div class="results-actions">
+          <button id="play-again-button" class="button button-primary" type="button">
+            🔄 Play again
+          </button>
+          <button class="button button-secondary" data-screen="map" type="button">
+            🗺️ Explore world
+          </button>
+          <button class="button button-secondary" data-screen="learn" type="button">
+            🧠 Learn more
+          </button>
+          <button class="button button-secondary" data-screen="home" type="button">
+            🏠 Home
+          </button>
+        </div>
+      </article>
+    </section>
+
+    <footer class="app-footer">
+      <span>🌎 FLAG QUEST</span>
+      <span>Learn with curiosity. Celebrate every discovery.</span>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
